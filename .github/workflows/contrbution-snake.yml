@@ -1,8 +1,11 @@
 name: Contribution snake
 
+permissions:
+  contents: write
+
 on:
   schedule: # execute every 12 hours
-    - cron: "* */12 * * *"
+    - cron: "0 */12 * * *"
   workflow_dispatch:
 
 jobs:
@@ -16,7 +19,7 @@ jobs:
           github_user_name: madushadhanushka
           svg_out_path: dist/github-contribution-snake.svg
 
-      - uses: crazy-max/ghaction-github-pages@v2.1.3
+      - uses: crazy-max/ghaction-github-pages@v5
         with:
           target_branch: output
           build_dir: dist
