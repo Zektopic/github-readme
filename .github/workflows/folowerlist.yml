@@ -1,9 +1,12 @@
 name: Get Top Followers
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron: '0 22 * * *'
   workflow_dispatch:
@@ -12,15 +15,18 @@ jobs:
   top-followers:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Setup python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
-          python-version: 3.8
+          python-version: '3.12'
       - name: Install requests
         run: pip install requests
       - name: Update README
-        run: python src/getTopFollowers.py ${{ github.repository_owner }} ${{ secrets.GITHUB_TOKEN }} README.md
+        env:
+          REPO_OWNER: ${{ github.repository_owner }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python src/getTopFollowers.py "$REPO_OWNER" "$GH_TOKEN" README.md
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
